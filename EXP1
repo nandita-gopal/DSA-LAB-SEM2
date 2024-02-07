@@ -1,0 +1,24 @@
+#include<stdio.h>
+int avg(int *arr, int n);
+
+int main(){
+    int a[5], *arr,n,i;
+    int n=5;
+    for(i=0; i<n; i++){
+    printf("enter marks in subject %d ", i+1);
+    scanf("%d",&a[i]);}
+    arr=a;
+    avg(arr,n);
+
+}
+
+int avg(int *arr, int n){
+    int i;
+    float sum=0;
+    float average;
+    for(i=0; i<n;i++){
+        sum+=*(arr+i);
+    }
+    average= sum/n;
+    printf("average is %f", average);
+}
