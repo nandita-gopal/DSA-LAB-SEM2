@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void insertAtPosition(struct Node** head_ref, int position, int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = data;
+    if (position == 0) {
+        new_node->next = *head_ref;
+        *head_ref = new_node;
+        return;
+    }
+  
+    struct Node* current = *head_ref;
+    for (int i = 0; current != NULL && i < position - 1; i++)
+        current = current->next;
+  
+    if (current == NULL) {
+        printf("Position out of range\n");
+        return;
+    }
+
+    new_node->next = current->next;
+    current->next = new_node;
+}
+
+void deleteAtPosition(struct Node** head_ref, int position) {
+    if (*head_ref == NULL)
+        return;
+
+    struct Node* temp = *head_ref;
+    
+    if (position == 0) {
+        *head_ref = temp->next;
+        free(temp);
+        return;
+    }
+    
+    for (int i = 0; temp != NULL && i < position - 1; i++)
+        temp = temp->next;
+
+    if (temp == NULL || temp->next == NULL) {
+        printf("Position out of range\n");
+        return;
+    }
+
+    struct Node* next = temp->next->next;
+    free(temp->next);
+    temp->next = next;
+}
+
+void printList(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+int main() {
+    struct Node* head = NULL;
+    
+    insertAtPosition(&head, 0, 10); 
+    insertAtPosition(&head, 1, 20); 
+    insertAtPosition(&head, 1, 30); 
+    insertAtPosition(&head, 2, 40);
+    
+    printf("Linked list after insertions: ");
+    printList(head);
+    
+    deleteAtPosition(&head, 1); 
+    printf("Linked list after deletion at position 1: ");
+    printList(head);
+    
+    return 0;
+}
