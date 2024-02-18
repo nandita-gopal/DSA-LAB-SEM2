@@ -1,0 +1,86 @@
+#include <stdio.h>
+#define MAX_TERMS 100
+
+typedef struct {
+    int row;
+    int col;
+    int value;
+} Element;
+
+typedef struct {
+    int rows;
+    int cols;
+    int numTerms;
+    Element data[MAX_TERMS];
+} SparseMatrix;
+
+void initializeMatrix(SparseMatrix *matrix, int rows, int cols) {
+    matrix->rows = rows;
+    matrix->cols = cols;
+    matrix->numTerms = 0;
+}
+
+void addElement(SparseMatrix *matrix, int row, int col, int value) {
+    if (matrix->numTerms >= MAX_TERMS) {
+        printf("Matrix is full.\n");
+        return;
+    }
+    matrix->data[matrix->numTerms].row = row;
+    matrix->data[matrix->numTerms].col = col;
+    matrix->data[matrix->numTerms].value = value;
+    matrix->numTerms++;
+}
+
+SparseMatrix multiplySparseMatrices(SparseMatrix matrix1, SparseMatrix matrix2) {
+    SparseMatrix result;
+    initializeMatrix(&result, matrix1.rows, matrix2.cols);
+    
+    if (matrix1.cols != matrix2.rows) {
+        printf("Matrix multiplication not possible.\n");
+        return result;
+    }
+    
+    for (int i = 0; i < matrix1.numTerms; i++) {
+        for (int j = 0; j < matrix2.numTerms; j++) {
+            if (matrix1.data[i].col == matrix2.data[j].row) {
+                int value = matrix1.data[i].value * matrix2.data[j].value;
+                addElement(&result, matrix1.data[i].row, matrix2.data[j].col, value);
+            }
+        }
+    }
+    
+    return result;
+}
+
+void displayMatrix(SparseMatrix matrix) {
+    printf("Sparse Matrix:\n");
+    printf("Rows: %d, Columns: %d\n", matrix.rows, matrix.cols);
+    printf("Non-zero elements:\n");
+    for (int i = 0; i < matrix.numTerms; i++) {
+        printf("(%d, %d) = %d\n", matrix.data[i].row, matrix.data[i].col, matrix.data[i].value);
+    }
+}
+
+int main() {
+    SparseMatrix matrix1, matrix2;
+    int rows1 = 2, cols1 = 3;
+    int rows2 = 3, cols2 = 2;
+    initializeMatrix(&matrix1, rows1, cols1);
+    initializeMatrix(&matrix2, rows2, cols2);
+    
+    addElement(&matrix1, 0, 0, 1);
+    addElement(&matrix1, 0, 2, 2);
+    addElement(&matrix1, 1, 1, 3);
+    
+    addElement(&matrix2, 0, 0, 4);
+    addElement(&matrix2, 1, 0, 5);
+    addElement(&matrix2, 1, 1, 6);
+    addElement(&matrix2, 2, 0, 7);
+
+    SparseMatrix result = multiplySparseMatrices(matrix1, matrix2);
+    displayMatrix(result);
+    
+   
+    
+    return 0;
+}
