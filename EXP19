@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void insertAtBeginning(struct Node** head_ref, int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = data;
+
+    new_node->next = *head_ref;
+    *head_ref = new_node;
+}
+
+int search(struct Node* head, int key) {
+    struct Node* current = head;
+    int position = 0;
+    while (current != NULL) {
+        if (current->data == key)
+            return position; 
+        current = current->next;
+        position++;
+    }
+  
+    return -1;
+}
+void printList(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    
+    insertAtBeginning(&head, 10);
+    insertAtBeginning(&head, 20);
+    insertAtBeginning(&head, 30);
+    insertAtBeginning(&head, 40);
+    insertAtBeginning(&head, 50);
+    
+    printf("Linked list: ");
+    printList(head);
+  
+    int key = 30;
+    int position = search(head, key);
+    if (position != -1)
+        printf("%d found at position %d\n", key, position);
+    else
+        printf("%d not found in the list\n", key);
+    
+    return 0;
+}
