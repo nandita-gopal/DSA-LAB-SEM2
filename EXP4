@@ -1,0 +1,57 @@
+#include <stdio.h>
+
+#define MAX_SIZE 100
+
+void insertAtBeginning(int arr[], int *size, int element) {
+    if (*size >= MAX_SIZE) {
+        printf("Array is full\n");
+        return;
+    }
+    
+    for (int i = *size; i > 0; i--) {
+        arr[i] = arr[i - 1];
+    }
+    
+    arr[0] = element;
+    
+    (*size)++;
+}
+
+void deleteFromBeginning(int arr[], int *size) {
+    if (*size == 0) {
+        printf("Array is empty\n");
+        return;
+    }
+    
+    for (int i = 0; i < *size - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    
+    (*size)--;
+}
+
+void displayArray(int arr[], int size) {
+    printf("Array: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int array[MAX_SIZE] = {6,98,23,0,45};
+    int size = 5;
+    
+    printf("Array initially:");
+    displayArray(array, size);
+    
+    insertAtBeginning(array, &size, 99);
+    printf("After insertion at the beginning: ");
+    displayArray(array, size);
+    
+    deleteFromBeginning(array, &size);
+    printf("After deletion from the beginning: ");
+    displayArray(array, size);
+    
+    return 0;
+}
