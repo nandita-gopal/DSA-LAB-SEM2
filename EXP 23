@@ -1,0 +1,57 @@
+ #include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    if (node == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(1);
+    }
+    node->data = data;
+    node->next = NULL;
+    return node;
+}
+void append(struct Node** head_ref, int new_data) {
+    struct Node* new_node = newNode(new_data);
+    if (*head_ref == NULL) {
+        *head_ref = new_node;
+        new_node->next = *head_ref;
+    } else {
+        struct Node* last = *head_ref;
+        while (last->next != *head_ref)
+            last = last->next;
+        last->next = new_node;
+        new_node->next = *head_ref;
+    }
+}
+
+void printList(struct Node* head) {
+    if (head == NULL) {
+        printf("The list is empty.\n");
+        return;
+    }
+    struct Node* temp = head;
+    do {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    append(&head, 1);
+    append(&head, 2);
+    append(&head, 3);
+    append(&head, 4);
+
+    printf("Circular Linked List is: ");
+    printList(head);
+
+    return 0;
+}
