@@ -1,10 +1,5 @@
-	
-// Simple C program to print next greater elements 
-// in a given array 
 #include<stdio.h> 
 
-/* prints element and NGE pair for all elements of 
-arr[] of size n */
 void printNGE(int arr[], int n) 
 { 
 	int next, i, j; 
